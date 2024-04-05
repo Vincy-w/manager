@@ -44,6 +44,7 @@
             </template>
             <el-menu-item index="/notice">公告信息</el-menu-item>
             <el-menu-item index="/type">教室分类</el-menu-item>
+            <el-menu-item index="/classroom">教室信息</el-menu-item>
           </el-submenu>
 
           <el-submenu index="user">
