@@ -17,6 +17,7 @@
             <if test="id != null"> and id= #{id}</if>
             <if test="name != null"> and classroom.name like concat('%', #{name}, '%')</if>
             <if test="classroomadminId != null"> and classroom.classroomadmin_id= #{classroomadminId}</if>
+            <if test="typeId != null"> and classroom.type_id= #{typeId}</if>
         </where>
         order by id desc
     </select>
