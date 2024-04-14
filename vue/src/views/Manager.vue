@@ -42,13 +42,16 @@
             <template slot="title">
               <i class="el-icon-menu"></i><span>信息管理</span>
             </template>
-            <el-menu-item index="/notice">公告信息</el-menu-item>
-            <el-menu-item index="/type">教室分类</el-menu-item>
+            <el-menu-item index="/notice" v-if="user.role==='ADMIN'">公告信息</el-menu-item>
+            <el-menu-item index="/type" v-if="user.role==='ADMIN'">教室分类</el-menu-item>
             <el-menu-item index="/classroom" v-if="user.role !== 'STUDENT'">教室信息</el-menu-item>
             <el-menu-item index="/classroomStudent" v-else>教室信息</el-menu-item>
+            <el-menu-item index="/reserve">预约记录</el-menu-item>
+            <el-menu-item index="/fix">报修记录</el-menu-item>
+            <el-menu-item index="/checks">检修记录</el-menu-item>
           </el-submenu>
 
-          <el-submenu index="user">
+          <el-submenu index="user" v-if="user.role==='ADMIN'">
             <template slot="title">
               <i class="el-icon-menu"></i><span>用户管理</span>
             </template>

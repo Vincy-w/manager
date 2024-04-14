@@ -26,7 +26,7 @@
                       </div>
                       <div style="margin-top: 5px">开放时间：{{item.start}}-{{item.end}}</div>
                       <div>
-                          <el-button style="margin-top: 5px" type="primary" size="mini">预约</el-button>
+                          <el-button style="margin-top: 5px" type="primary" size="mini" @click="reserve(item)" :disabled="item.status==='使用中'">预约</el-button>
                       </div>
                   </div>
 
@@ -77,6 +77,23 @@ export default {
       this.loadType()
   },
   methods: {
+      reserve(item){
+        let data={
+            classroomId:item.id,
+            classroomadminId:item.classroomadminId,
+            studentId:this.user.id,
+            status:'待审核',
+            dostatus:'待审核'
+        }
+        this.$request.post('/reserve/add',data).then(res=>{
+            if(res.code==='200'){
+                this.$message.success('操作成功，等待管理员审核')
+                this.load(1)
+            }else {
+                this.$message.error(res.msg)
+            }
+        })
+      },
       loadType(){
           this.$request.get('type/selectAll').then(res=>{
               if(res.code==='200'){

@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.ReserveMapper">
+
+    <sql id="Base_Column_List">
+        id,classroom_id,classroomadmin_id,student_id,time,status,dostatus
+    </sql>
+
+
+    <select id="selectAll" resultType="com.example.entity.Reserve">
+        select reserve.*,classroom.name as classroomName
+             ,classroom.start,classroom.end
+             ,classroomadmin.name as classroomadminName
+            ,student.name as studentName
+        from reserve
+        left join classroom on reserve.classroom_id=classroom.id
+        left join classroomadmin on reserve.classroomadmin_id=classroomadmin.id
+        left join student on reserve.student_id=student.id
+        <where>
+            <if test="id != null"> and id= #{id}</if>
+            <if test="status != null"> and reserve.status =#{status}</if>
+            <if test="classroomadminId != null"> and reserve.classroomadmin_id= #{classroomadminId}</if>
+            <if test="studentId != null"> and reserve.student_id= #{studentId}</if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectById" resultType="com.example.entity.Reserve">
+        select
+        <include refid="Base_Column_List" />
+        from reserve
+        where id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        delete from reserve
+        where  id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.Reserve" useGeneratedKeys="true">
+        insert into reserve
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">id,</if>
+                <if test="classroomId != null">classroom_id,</if>
+                <if test="classroomadminId != null">classroomadmin_id,</if>
+                <if test="studentId != null">student_id,</if>
+                <if test="time != null">time,</if>
+                <if test="status != null">status,</if>
+                <if test="dostatus != null">dostatus,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="id != null">#{id},</if>
+                <if test="classroomId != null">#{classroomId},</if>
+                <if test="classroomadminId != null">#{classroomadminId},</if>
+                <if test="studentId != null">#{studentId},</if>
+                <if test="time != null">#{time},</if>
+                <if test="status != null">#{status},</if>
+                <if test="dostatus != null">#{dostatus},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.Reserve">
+        update reserve
+        <set>
+            <if test="classroomId != null">
+                classroom_id = #{classroomId},
+            </if>
+            <if test="classroomadminId != null">
+                classroomadmin_id = #{classroomadminId},
+            </if>
+            <if test="studentId != null">
+                student_id = #{studentId},
+            </if>
+            <if test="time != null">
+                time = #{time},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="dostatus != null">
+                dostatus = #{dostatus},
+            </if>
+        </set>
+        where id = #{id} 
+    </update>
+
+</mapper>

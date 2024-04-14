@@ -1,13 +1,14 @@
 package com.example.controller;
 
 import com.example.common.Result;
+import com.example.common.enums.StatusEnum;
 import com.example.entity.Classroom;
 import com.example.service.ClassroomService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
-import java.util.List;
+import java.util.*;
 
 /**
  * 教室信息表前端操作接口
@@ -84,4 +85,29 @@ public class ClassroomController {
         return Result.success(page);
     }
 
+    @GetMapping("/pie")
+    public Result pie(){
+        Map<String, Object> resultMap=new HashMap<>();
+        List<Map<String,Object>> resultList = new ArrayList<>();
+        //处理空闲/使用两种状态数据，封装进resultList
+        List<Classroom> classrooms = classroomService.selectAll(new Classroom());
+        long okCount = classrooms.stream().filter(x -> StatusEnum.OK.status.equals(x.getStatus())).count();
+        long noCount = classrooms.stream().filter(x -> StatusEnum.NO.status.equals(x.getStatus())).count();
+
+        Map<String,Object> okMap = new HashMap<>();
+        okMap.put("name",StatusEnum.OK.status);
+        okMap.put("value",okCount);
+        resultList.add(okMap);
+
+        Map<String,Object> noMap = new HashMap<>();
+        noMap.put("name",StatusEnum.NO.status);
+        noMap.put("value",noCount);
+        resultList.add(noMap);
+
+        resultMap.put("text","教室状态统计");
+        resultMap.put("subtext","统计维度：状态");
+        resultMap.put("name","数量");
+        resultMap.put("data",resultList);
+        return Result.success(resultMap);
+    }
 }

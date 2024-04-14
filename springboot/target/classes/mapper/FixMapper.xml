@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.mapper.FixMapper">
+
+    <sql id="Base_Column_List">
+        id,name,student_id,classroom_id,type_id,classroomadmin_id,status,time,fixtime
+    </sql>
+
+    <select id="selectAll" resultType="com.example.entity.Fix">
+        select fix.*,student.name as studentName,classroom.name as classroomName
+            ,classroomadmin.name as classroomadminName,type.name as typeName
+        from fix
+        left join student on fix.student_id=student.id
+        left join classroom on fix.classroom_id=classroom.id
+        left join classroomadmin on fix.classroomadmin_id=classroomadmin.id
+        left join type on fix.type_id=type.id
+        <where>
+            <if test="id != null"> and id= #{id}</if>
+            <if test="name != null"> and fix.name like concat('%', #{name}, '%')</if>
+            <if test="studentId != null"> and fix.student_id= #{studentId}</if>
+            <if test="classroomadminId != null"> and fix.classroomadmin_id= #{classroomadminId}</if>
+        </where>
+        order by id desc
+    </select>
+
+    <select id="selectById" resultType="com.example.entity.Fix">
+        select
+        <include refid="Base_Column_List" />
+        from fix
+        where id = #{id}
+    </select>
+
+    <delete id="deleteById">
+        delete from fix
+        where  id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.entity.Fix" useGeneratedKeys="true">
+        insert into fix
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="id != null">id,</if>
+                <if test="name != null">name,</if>
+                <if test="studentId != null">student_id,</if>
+                <if test="classroomId != null">classroom_id,</if>
+                <if test="typeId != null">type_id,</if>
+                <if test="classroomadminId != null">classroomadmin_id,</if>
+                <if test="status != null">status,</if>
+                <if test="time != null">time,</if>
+                <if test="fixtime != null">fixtime,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+                <if test="id != null">#{id},</if>
+                <if test="name != null">#{name},</if>
+                <if test="studentId != null">#{studentId},</if>
+                <if test="classroomId != null">#{classroomId},</if>
+                <if test="typeId != null">#{typeId},</if>
+                <if test="classroomadminId != null">#{classroomadminId},</if>
+                <if test="status != null">#{status},</if>
+                <if test="time != null">#{time},</if>
+                <if test="fixtime != null">#{fixtime},</if>
+        </trim>
+    </insert>
+
+    <update id="updateById" parameterType="com.example.entity.Fix">
+        update fix
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="studentId != null">
+                student_id = #{studentId},
+            </if>
+            <if test="classroomId != null">
+                classroom_id = #{classroomId},
+            </if>
+            <if test="typeId != null">
+                type_id = #{typeId},
+            </if>
+            <if test="classroomadminId != null">
+                classroomadmin_id = #{classroomadminId},
+            </if>
+            <if test="status != null">
+                status = #{status},
+            </if>
+            <if test="time != null">
+                time = #{time},
+            </if>
+            <if test="fixtime != null">
+                fixtime = #{fixtime},
+            </if>
+        </set>
+        where id = #{id} 
+    </update>
+
+</mapper>

@@ -29,6 +29,9 @@ const routes = [
       { path: 'classroomStudent', name: 'ClassroomStudent', meta: { name: '教室信息' }, component: () => import('../views/manager/ClassroomStudent') },
       { path: 'classroomadmin', name: 'Classroomadmin', meta: { name: '教室管理员' }, component: () => import('../views/manager/Classroomadmin') },
       { path: 'student', name: 'Student', meta: { name: '学生信息' }, component: () => import('../views/manager/Student') },
+      { path: 'reserve', name: 'Reserve', meta: { name: '预约记录' }, component: () => import('../views/manager/Reserve') },
+      { path: 'fix', name: 'Fix', meta: { name: '报修记录' }, component: () => import('../views/manager/Fix') },
+      { path: 'checks', name: 'Check', meta: { name: '检修记录' }, component: () => import('../views/manager/Check') },
     ]
   },
   {
